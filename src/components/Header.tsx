@@ -1,7 +1,12 @@
 import { ViewToggle } from "@/ui/ViewToggle";
 import Image from "next/image";
 
-export const Header = () => {
+type HeaderProps = {
+  activeView: "list" | "calendar";
+  setActiveView: (view: "list" | "calendar") => void;
+};
+
+export const Header = ({ activeView, setActiveView }: HeaderProps) => {
   return (
     <header className="w-full bg-white border border-[var(--border-primary)] z-50">
       <div className="flex justify-between items-center px-6 py-4 gap-4">
@@ -18,7 +23,7 @@ export const Header = () => {
           </h1>
         </div>
         <div>
-          <ViewToggle />
+          <ViewToggle activeView={activeView} setActiveView={setActiveView} />
         </div>
       </div>
     </header>

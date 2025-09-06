@@ -1,9 +1,12 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
 
-export const ViewToggle = () => {
-  const [activeView, setActiveView] = useState<"list" | "calendar">("list");
+type ViewToggleProps = {
+  activeView: "list" | "calendar";
+  setActiveView: (view: "list" | "calendar") => void;
+};
+
+export const ViewToggle = ({ activeView, setActiveView }: ViewToggleProps) => {
   return (
     <div className="flex rounded-lg overflow-hidden border border-gray-300">
       <button
