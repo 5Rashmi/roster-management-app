@@ -15,7 +15,7 @@ interface SlotsGridProps {
 }
 
 const SlotsGrid = ({ availability }: SlotsGridProps) => {
-  const timeSlots = generateTimeSlots("08:00", "23:45", 15);
+  const timeSlots = generateTimeSlots("08:00", "24:00", 15);
   const columnsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(0);
   const chunkedSlots = chunkArray(timeSlots, 4);

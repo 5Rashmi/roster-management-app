@@ -1,8 +1,9 @@
 "use client";
-import { RootState } from "@/store";
+import { AppDispatch, RootState } from "@/store";
+import { resetFilters, setFilter } from "@/store/providerSlice";
 import Dropdown from "@/ui/Dropdown";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const SessionFilterPanel = () => {
   const providers = useSelector((state: RootState) => state.provider.items);
@@ -10,6 +11,8 @@ const SessionFilterPanel = () => {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [selectedCenter, setSelectedCenter] = useState<string | null>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const types = [
     ...new Set(
@@ -42,6 +45,7 @@ const SessionFilterPanel = () => {
     setSelectedType(null);
     setSelectedService(null);
     setSelectedCenter(null);
+    dispatch(resetFilters());
   };
 
   const hasSelectedFilters = !!(
@@ -49,6 +53,16 @@ const SessionFilterPanel = () => {
     selectedService ||
     selectedCenter
   );
+
+  const handleApply = () => {
+    dispatch(
+      setFilter({
+        type: selectedType ?? "All",
+        service: selectedService ?? "All",
+        center: selectedCenter ?? "All",
+      })
+    );
+  };
 
   return (
     <div>
@@ -78,7 +92,10 @@ const SessionFilterPanel = () => {
             >
               Reset
             </button>
-            <button className="bg-[#E76943] text-white h-10 rounded-lg py-2 px-6">
+            <button
+              className="bg-[#E76943] text-white h-10 rounded-lg py-2 px-6"
+              onClick={handleApply}
+            >
               Apply
             </button>
           </>
