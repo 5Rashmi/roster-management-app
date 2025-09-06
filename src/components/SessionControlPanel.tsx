@@ -25,6 +25,9 @@ const SessionControlPanel = () => {
         if (avail.online_slots?.length) s.push("Online");
         if (avail.offline_slots?.length) s.push("Offline");
         if (avail.both_slots?.length) s.push("Online + Offline");
+        if (avail.online_booked_slots?.length) s.push("Online Booked");
+        if (avail.offline_booked_slots?.length) s.push("Offline Booked");
+        if (avail.blocked_slots?.length) s.push("Blocked");
         return s;
       })
     ),
