@@ -3,12 +3,13 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 interface DropdownProps {
   options: string[];
+  value: string | null;
+  onChange: (value: string | null) => void;
 }
-const Dropdown = ({ options }: DropdownProps) => {
-  const [query, setQuery] = useState("");
+const Dropdown = ({ options, value, onChange }: DropdownProps) => {
+  const [query, setQuery] = useState(value ?? "");
   const [filtered, setFiltered] = useState<string[]>(options);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +30,8 @@ const Dropdown = ({ options }: DropdownProps) => {
 
   useEffect(() => {
     setFiltered(options);
-  }, [options]);
+    setQuery(value ?? "");
+  }, [options, value]);
 
   const handleInputChange = (value: string) => {
     setQuery(value);
@@ -42,7 +44,7 @@ const Dropdown = ({ options }: DropdownProps) => {
   };
 
   const handleSelect = (option: string) => {
-    setSelected(option);
+    onChange(option);
     setQuery(option);
     setShowDropdown(false);
   };
@@ -54,7 +56,7 @@ const Dropdown = ({ options }: DropdownProps) => {
         value={query}
         onChange={(e) => handleInputChange(e.target.value)}
         onFocus={() => setShowDropdown(true)}
-        className="flex-1 w-73 p-2 h-10 max-w-100 rounded-md border border-[var(--border-primary)]"
+        className="flex-1 w-73 p-2 h-10 max-w-100 rounded-lg border border-[var(--border-primary)]"
         placeholder="Enter Text"
       />
 
