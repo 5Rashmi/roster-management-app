@@ -4,6 +4,7 @@ import ProviderDetails from "./ProviderDetails";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import SlotsGrid from "./SlotsGrid";
+import Loader from "@/ui/Loader";
 
 const ProviderSlots = ({
   setSelectedProvider,
@@ -85,7 +86,9 @@ const ProviderSlots = ({
           );
         })
       ) : (
-        <h2 className="text-2xl font-semibold mt-4">No Providers Available</h2>
+        <div className="flex justify-center items-center">
+          <Loader />
+        </div>
       )}
     </>
   );
