@@ -1,4 +1,4 @@
-export type SlotStatus = "online" | "offline" | "online + offline" | "online booked" | "offline booked" | "available";
+export type SlotStatus = "online" | "offline" | "online + offline" | "online booked" | "offline booked" | "blocked" | "available" | "google-calendar";
 export type Slot = {start: string; end: string; status: SlotStatus};
 
 export type ProviderEntity = {

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { generateTimeSlots } from "@/lib/time-slots";
+import Image from "next/image";
 
 function formatTo12Hour(time: string): string {
   const [hour, minute] = time.split(":").map(Number);
@@ -10,6 +11,7 @@ function formatTo12Hour(time: string): string {
 }
 
 export interface CalendarEvent {
+  id: number;
   title: string;
   day: string;
   start: string;
@@ -21,7 +23,8 @@ export interface CalendarEvent {
     | "offline booked"
     | "blocked"
     | "available"
-    | "online + offline";
+    | "online + offline"
+    | "google-calendar";
 }
 
 export default function CalendarView({
@@ -73,7 +76,10 @@ export default function CalendarView({
       </div>
 
       {slots.map((time) => (
-        <div key={time} className="grid grid-cols-8 border-t border-[#E0E0E0]">
+        <div
+          key={time}
+          className="grid grid-cols-8 text-center border-t border-[#E0E0E0]"
+        >
           <div className="p-1 text-xs border-r border-[#E0E0E0]">
             {formatTo12Hour(time)}
           </div>
@@ -84,19 +90,52 @@ export default function CalendarView({
               (e) => e.day === dateStr && e.start === time
             );
 
-            let bg = "";
-            if (event?.status === "online") bg = "bg-green-400";
-            if (event?.status === "offline") bg = "bg-orange-400";
-            if (event?.status === "online + offline") bg = "bg-blue-400";
-            if (event?.status === "blocked") bg = "bg-yellow-700";
-            if (event?.status === "available") bg = "bg-gray-300";
+            let bg = "",
+              border = "";
+
+            if (event?.status === "online") bg = "bg-[#3D7FB4]";
+            if (event?.status === "online + offline") bg = "bg-[#A288C2]";
+            if (event?.status === "blocked") bg = "bg-[#B26522]";
+            if (event?.status === "online booked") bg = "bg-[#37614A]";
+            if (event?.status === "available") bg = "bg-[#C288A8]";
+            if (event?.status === "google-calendar") {
+              bg = "bg-[#E3F2FF]";
+              border = "border border-[#255780]";
+            }
 
             return (
               <div
                 key={d + time}
-                className={`h-15 min-w-[140px] border-r border-[#E0E0E0] text-xs flex items-center justify-center ${bg}`}
+                className={`h-15 min-w-[140px] border-r border-[#E0E0E0] text-xs px-2 ${
+                  event
+                    ? `${bg} ${border} ${
+                        event.status === "google-calendar"
+                          ? "flex items-center justify-start"
+                          : "flex items-center justify-between"
+                      }`
+                    : ""
+                } overflow-hidden`}
               >
-                {event ? event.title : ""}
+                {event ? (
+                  event.status === "google-calendar" ? (
+                    <h5
+                      className="text-[#255780] font-bold truncate w-full text-left"
+                      title={event.title}
+                    >
+                      {event.title}
+                    </h5>
+                  ) : (
+                    <>
+                      <div className="text-white">#{event.id}</div>
+                      <Image
+                        src="/svg/video-icon-white.svg"
+                        alt="video"
+                        width={20}
+                        height={20}
+                      />
+                    </>
+                  )
+                ) : null}
               </div>
             );
           })}

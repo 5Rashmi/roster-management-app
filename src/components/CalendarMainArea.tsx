@@ -1,10 +1,28 @@
-import React, { useState } from "react";
-import CalendarView, { CalendarEvent } from "./calendar-main-area/CalendarView";
+"use client";
+import React, { useMemo, useState } from "react";
+import CalendarView from "./calendar-main-area/CalendarView";
 import DateNavigation from "./calendar-main-area/DateNavigation";
 import { getWeekDates } from "@/lib/current-week-dates";
+import { generateEventsFromProviders } from "@/lib/events";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { generateMockGoogleEvents } from "@/lib/mock-google-events";
+import { ProviderEntity } from "@/lib/types";
 
 const CalendarMainArea = () => {
   const [baseDate, setBaseDate] = useState(new Date());
+  const providers = useSelector<RootState, ProviderEntity[]>(
+    (state) => state.provider.items
+  );
+
+  const currentWeekDates = useMemo(() => getWeekDates(baseDate), [baseDate]);
+
+  const events = [
+    ...currentWeekDates.flatMap((date) =>
+      generateEventsFromProviders(providers, date.toISOString().split("T")[0])
+    ),
+    ...generateMockGoogleEvents(currentWeekDates),
+  ];
 
   const handlePreviousWeek = () => {
     const newDate = new Date(baseDate);
@@ -17,25 +35,6 @@ const CalendarMainArea = () => {
     newDate.setDate(baseDate.getDate() + 7);
     setBaseDate(newDate);
   };
-
-  const currentWeekDates = getWeekDates(baseDate);
-
-  const events: CalendarEvent[] = [
-    {
-      title: "Dr. Aarushi Sharma (Online)",
-      day: "2025-09-06",
-      start: "08:00",
-      end: "08:15",
-      status: "online",
-    },
-    {
-      title: "Blocked - Unwell",
-      day: "2025-09-06",
-      start: "11:00",
-      end: "11:15",
-      status: "blocked",
-    },
-  ];
 
   return (
     <div className="p-5">
