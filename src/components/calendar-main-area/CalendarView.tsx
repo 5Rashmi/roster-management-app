@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { generateTimeSlots } from "@/lib/time-slots";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 function formatTo12Hour(time: string): string {
   const [hour, minute] = time.split(":").map(Number);
@@ -39,10 +41,48 @@ export default function CalendarView({
 
   const today = new Date().getDate().toString().padStart(2, "0");
 
+  const search = useSelector((state: RootState) => state.provider.search);
+  const filters = useSelector((state: RootState) => state.provider.filters);
+
   const [activeDayIndex, setActiveDayIndex] = useState(() => {
     return weekDates.findIndex(
       (date) => date.getDate().toString().padStart(2, "0") === today
     );
+  });
+
+  const filteredBySearch = events.filter((event) => {
+    return event.title.toLowerCase().includes(search.toLowerCase());
+  });
+
+  const filteredEvents = filteredBySearch.filter((event) => {
+    if (filters.service === "All") {
+      return true; // Show all events if "All" is selected
+    }
+
+    if (filters.service === "Online" && event.status === "online") {
+      return true;
+    }
+
+    if (filters.service === "Offline" && event.status === "offline") {
+      return true;
+    }
+
+    if (
+      filters.service === "Online + Offline" &&
+      event.status === "online + offline"
+    ) {
+      return true;
+    }
+
+    if (filters.service === "Available" && event.status === "available") {
+      return true;
+    }
+
+    if (filters.service === "Blocked" && event.status === "blocked") {
+      return true;
+    }
+
+    return false;
   });
 
   return (
@@ -86,7 +126,7 @@ export default function CalendarView({
 
           {days.map((d, i) => {
             const dateStr = weekDates[i].toISOString().split("T")[0];
-            const event = events.find(
+            const event = filteredEvents.find(
               (e) => e.day === dateStr && e.start === time
             );
 
@@ -106,7 +146,7 @@ export default function CalendarView({
             return (
               <div
                 key={d + time}
-                className={`h-15 min-w-[140px] border-r border-[#E0E0E0] text-xs px-2 ${
+                className={`h-15 min-w-[140px] rounded-md border-r border-[#E0E0E0] text-xs px-2 ${
                   event
                     ? `${bg} ${border} ${
                         event.status === "google-calendar"

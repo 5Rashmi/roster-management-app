@@ -6,13 +6,21 @@ interface ProviderDetailsProps {
   name: string;
   offlineSlots: number;
   onlineSlots: number;
+  setSelectedProvider: (name: string) => void;
+  setActiveView: React.Dispatch<React.SetStateAction<"list" | "calendar">>;
 }
 const ProviderDetails = ({
   imageUrl,
   name,
   offlineSlots,
   onlineSlots,
+  setSelectedProvider,
+  setActiveView,
 }: ProviderDetailsProps) => {
+  const handleViewCalendar = () => {
+    setSelectedProvider(name);
+    setActiveView("calendar");
+  };
   return (
     <div className="mt-6 flex flex-col gap-4 w-40 h-48 mr-4">
       <Image
@@ -46,7 +54,10 @@ const ProviderDetails = ({
         </div>
       </div>
       <div className="flex gap-1 cursor-pointer">
-        <h5 className="text-[#E76943] text-decoration-line: underline">
+        <h5
+          className="text-[#E76943] text-decoration-line: underline"
+          onClick={handleViewCalendar}
+        >
           View Calendar
         </h5>
         <Image

@@ -12,10 +12,17 @@ import { useDispatch } from "react-redux";
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
   const [activeView, setActiveView] = useState<"list" | "calendar">("list");
+  const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(fetchProviders());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (activeView === "list") {
+      setSelectedProvider(null);
+    }
+  }, [activeView]);
 
   return (
     <div className="font-sans grid">
@@ -24,12 +31,15 @@ export default function Home() {
         {activeView === "list" ? (
           <>
             <SessionControlPanel />
-            <SessionMainArea />
+            <SessionMainArea
+              setActiveView={setActiveView}
+              setSelectedProvider={setSelectedProvider}
+            />
           </>
         ) : (
           <>
             <CalendarControlPanel />
-            <CalendarMainArea />
+            <CalendarMainArea selectedProvider={selectedProvider} />
           </>
         )}
       </div>

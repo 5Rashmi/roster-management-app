@@ -5,7 +5,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import SlotsGrid from "./SlotsGrid";
 
-const ProviderSlots = () => {
+const ProviderSlots = ({
+  setSelectedProvider,
+  setActiveView,
+}: {
+  setSelectedProvider: (name: string) => void;
+  setActiveView: React.Dispatch<React.SetStateAction<"list" | "calendar">>;
+}) => {
   const providers = useSelector((state: RootState) => state.provider.items);
   const filters = useSelector((state: RootState) => state.provider.filters);
   const search = useSelector((state: RootState) => state.provider.search);
@@ -71,6 +77,8 @@ const ProviderSlots = () => {
                 name={provider.name}
                 offlineSlots={offline}
                 onlineSlots={online}
+                setSelectedProvider={setSelectedProvider}
+                setActiveView={setActiveView}
               />
               <SlotsGrid availability={availability} />
             </div>
