@@ -24,6 +24,10 @@ export default function Home() {
     }
   }, [activeView]);
 
+  const removeProvider = () => {
+    setSelectedProvider(null);
+  };
+
   return (
     <div className="font-sans grid">
       <Header activeView={activeView} setActiveView={setActiveView} />
@@ -38,7 +42,10 @@ export default function Home() {
           </>
         ) : (
           <>
-            <CalendarControlPanel />
+            <CalendarControlPanel
+              selectedProvider={selectedProvider}
+              removeProvider={removeProvider}
+            />
             <CalendarMainArea selectedProvider={selectedProvider} />
           </>
         )}
