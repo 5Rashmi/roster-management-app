@@ -1,4 +1,3 @@
-// /lib/time-slots.ts
 export function generateTimeSlots(start: string, end: string, interval: number = 25): string[] {
   const slots: string[] = [];
   let [h, m] = start.split(":").map(Number);

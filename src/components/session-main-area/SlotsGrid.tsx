@@ -60,7 +60,7 @@ const SlotsGrid = ({ availability }: SlotsGridProps) => {
       >
         <Image src="/svg/arrow-left.svg" alt="Left" width={6} height={8} />
       </div>
-      <div className="grid grid-rows-4 grid-flow-col gap-x-6 gap-y-2 p-3 overflow-x-auto">
+      <div className="grid grid-rows-4 grid-flow-col gap-x-4 gap-y-1 p-3 overflow-x-auto">
         {visibleChunks.map((group, colIdx) =>
           group.map((time, rowIdx) => (
             <Slot

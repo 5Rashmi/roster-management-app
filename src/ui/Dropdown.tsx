@@ -5,8 +5,9 @@ interface DropdownProps {
   options: string[];
   value: string | null;
   onChange: (value: string | null) => void;
+  className?: string;
 }
-const Dropdown = ({ options, value, onChange }: DropdownProps) => {
+const Dropdown = ({ options, value, onChange, className }: DropdownProps) => {
   const [query, setQuery] = useState(value ?? "");
   const [filtered, setFiltered] = useState<string[]>(options);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -50,7 +51,10 @@ const Dropdown = ({ options, value, onChange }: DropdownProps) => {
   };
 
   return (
-    <div ref={dropdownRef} className="relative w-64 flex flex-col mb-4">
+    <div
+      ref={dropdownRef}
+      className={`relative w-64 flex flex-col mb-4 ${className}`}
+    >
       <input
         type="text"
         value={query}

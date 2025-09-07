@@ -25,9 +25,6 @@ const SearchInput = () => {
           className="focus:outline-none focus:ring-0 focus:border-transparent w-full"
         />
       </div>
-      <h4 className="text-[#4C4C4C] bg-none text-sm mt-4">
-        You can search up to 5 provider to view their availability specifically.
-      </h4>
     </div>
   );
 };

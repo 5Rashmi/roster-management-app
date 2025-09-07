@@ -28,8 +28,8 @@ export default function Home() {
           </>
         ) : (
           <>
-            <CalendarMainArea />
             <CalendarControlPanel />
+            <CalendarMainArea />
           </>
         )}
       </div>

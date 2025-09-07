@@ -9,6 +9,9 @@ const SessionControlPanel = () => {
       <SessionFilterPanel />
       <hr className="mt-4 w-73 border-[var(--border-primary)]" />
       <SearchInput />
+      <h4 className="text-[#4C4C4C] bg-none text-sm mt-4">
+        You can search up to 5 provider to view their availability specifically.
+      </h4>
     </div>
   );
 };
